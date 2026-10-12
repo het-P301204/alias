@@ -1,0 +1,88 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-obsidian: #171615;
+  --color-graphite: #282624;
+  --color-graphite-light: #342F2B;
+  --color-ivory: #F5F0E8;
+  --color-ivory-dim: #C8C2B8;
+  --color-copper: #B97853;
+  --color-copper-light: #D4966A;
+  --color-red: #B84D43;
+  --color-red-light: #D4625A;
+  --color-sage: #8EAA91;
+  --color-amber: #D5A45B;
+  --color-border: #3A3530;
+  --color-surface: #1E1C1A;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background-color: var(--color-obsidian);
+  color: var(--color-ivory);
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-graphite);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-copper);
+}
+
+/* Focus ring */
+:focus-visible {
+  outline: 2px solid var(--color-copper);
+  outline-offset: 2px;
+}
+
+/* Monaco editor overrides */
+.monaco-editor {
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+/* ReactFlow overrides */
+.react-flow__background {
+  background-color: var(--color-surface) !important;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Pulse for running state */
+@keyframes status-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+.status-pulse {
+  animation: status-pulse 2s ease-in-out infinite;
+}

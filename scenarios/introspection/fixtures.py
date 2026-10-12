@@ -1,11 +1,11 @@
 import strawberry
-from enum import auto
+from enum import Enum
 from typing import Optional
 import typing
 
 
 @strawberry.enum
-class UserRole:
+class UserRole(Enum):
     ADMIN = "ADMIN"
     STAFF = "STAFF"
     CUSTOMER = "CUSTOMER"

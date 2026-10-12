@@ -16,7 +16,11 @@ class Settings(BaseSettings):
 
     db_path: str = str(_REPO_ROOT / "alias.db")
 
-    cors_origins: list[str] = ["http://localhost:5173", "http://localhost:3000"]
+    cors_origins: list[str] = [
+        "http://localhost:5173",
+        "http://localhost:5180",
+        "http://localhost:3000",
+    ]
 
     max_query_depth: int = 10
     max_complexity: int = 1000
