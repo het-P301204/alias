@@ -1,46 +1,30 @@
 import strawberry
-import typing
 from typing import Optional
 
-from scenarios.query_complexity.fixtures import USERS, POSTS, COMMENTS
+
+@strawberry.type
+class Author:
+    id: strawberry.ID
+    name: str
 
 
 @strawberry.type
 class Comment:
     id: strawberry.ID
     content: str
-
-    @strawberry.field
-    def author(self) -> Optional["User"]:
-        from scenarios.query_complexity.fixtures import COMMENTS as C
-        record = C.get(str(self.id))
-        if not record:
-            return None
-        return _make_user(record["author_id"])
+    author: Author
 
 
 @strawberry.type
 class Post:
     id: strawberry.ID
     title: str
-    content: str
 
     @strawberry.field
-    def author(self) -> Optional["User"]:
-        record = POSTS.get(str(self.id))
-        if not record:
-            return None
-        return _make_user(record["author_id"])
-
-    @strawberry.field
-    def comments(self) -> typing.List[Comment]:
-        record = POSTS.get(str(self.id))
-        if not record:
-            return []
+    def comments(self) -> list[Comment]:
         return [
-            Comment(id=cid, content=COMMENTS[cid]["content"])
-            for cid in record["comment_ids"]
-            if cid in COMMENTS
+            Comment(id="c1", content="First comment", author=Author(id="2", name="User2")),
+            Comment(id="c2", content="Second comment", author=Author(id="3", name="User3")),
         ]
 
 
@@ -50,32 +34,27 @@ class User:
     name: str
 
     @strawberry.field
-    def posts(self) -> typing.List[Post]:
-        record = USERS.get(str(self.id))
-        if not record:
-            return []
-        return [Post(id=pid, title=POSTS[pid]["title"], content=POSTS[pid]["content"]) for pid in record["post_ids"] if pid in POSTS]
-
-    @strawberry.field
-    def friends(self) -> typing.List["User"]:
-        record = USERS.get(str(self.id))
-        if not record:
-            return []
-        return [_make_user(fid) for fid in record["friend_ids"]]
-
-
-def _make_user(uid: str) -> User:
-    r = USERS.get(str(uid))
-    if not r:
-        return User(id=uid, name="Unknown")
-    return User(id=r["id"], name=r["name"])
+    def posts(self) -> list[Post]:
+        return [
+            Post(id=f"p{self.id}1", title=f"Post 1 by {self.name}"),
+            Post(id=f"p{self.id}2", title=f"Post 2 by {self.name}"),
+        ]
 
 
 @strawberry.type
 class Query:
-    @strawberry.field(description="All users with nested relationships")
-    def users(self) -> typing.List[User]:
-        return [_make_user(uid) for uid in USERS]
+    @strawberry.field
+    def users(self) -> list[User]:
+        return [
+            User(id="1", name="Alice"),
+            User(id="2", name="Bob"),
+        ]
+
+    @strawberry.field
+    def user(self, id: strawberry.ID) -> Optional[User]:
+        users = {"1": User(id="1", name="Alice"), "2": User(id="2", name="Bob")}
+        return users.get(str(id))
 
 
+# Vulnerable: no depth or complexity limits
 vulnerable_schema = strawberry.Schema(query=Query)
