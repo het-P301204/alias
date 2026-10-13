@@ -16,6 +16,12 @@
 
 </div>
 
+<div align="center">
+
+![Overview](docs/screenshots/overview.png)
+
+</div>
+
 ---
 
 ## Overview
@@ -57,17 +63,25 @@ The overview page surfaces live metrics and all six scenario cards with difficul
 
 The Attack Lab is the centrepiece — a Monaco-powered query editor, a real-time status pipeline (Ready → Validating → Running → Analyzing → Completed), and a structured evidence panel. Switch between `VULNERABLE` and `HARDENED` modes with a single click and compare results side by side.
 
+![Attack Lab](docs/screenshots/attack-lab.png)
+
 ### Schema Explorer
 
 React Flow graph of the live schema — nodes for types, edges for field relationships. Filter by Query / Mutation / Object / Enum / Scalar, search by name, and toggle between vulnerable and hardened schemas to see how the defense rewires the graph.
+
+![Schema Explorer](docs/screenshots/schema-explorer.png)
 
 ### Defense Center
 
 Catalog of all six defensive controls with one-click verification. Each verification run returns structured proof that the control is active — not just "it should work" but "here is the blocked request and the error it produced."
 
+![Defense Center](docs/screenshots/defense-center.png)
+
 ### Experiments & Reports
 
 Full history of every run across all scenarios, filterable by scenario, mode, and status. Export any experiment as JSON, CSV, or HTML.
+
+![Experiments](docs/screenshots/experiments.png)
 
 ---
 
